@@ -1,15 +1,16 @@
-import Processo from "../abstracoes/processo";
-import Armazem from "../dominio/armazem";
-import Cliente from "../modelos/cliente";
-import CadastrarDocumentosCliente from "./cadastrarDocumentosCliente";
-import CadastroEnderecoTitular from "./cadastroEnderecoTitular";
+import Processo from "../abstracoes/processo.js";
+import Armazem from "../dominio/armazem.js";
+import Cliente from "../modelos/cliente.js";
+import CadastrarDocumentosCliente from "./cadastrarDocumentosCliente.js";
+import CadastroEnderecoTitular from "./cadastroEnderecoTitular.js";
 
 export default class CadastroClienteTitular extends Processo {
     processar(): void {
-        console.log('Iniciando o cadastro de um novo cliente...')
-        let nome = this.entrada.receberTexto('Qual o nome do novo cliente?')
-        let nomeSocial = this.entrada.receberTexto('Qual o nome social do novo cliente?')
-        let dataNascimento = this.entrada.receberData('Qual a data de nascimento?')
+        console.log('\n--- Iniciando cadastro de Cliente Titular ---')
+        let nome = this.receberApenasLetras('Qual o nome do novo cliente?')
+        let nomeSocial = this.receberApenasLetras('Qual o nome social?')
+        let dataNascimento = this.receberDataValida('Qual a data de nascimento (dd/mm/aaaa)?')
+        
         let cliente = new Cliente(nome, nomeSocial, dataNascimento)
 
         this.processo = new CadastroEnderecoTitular(cliente)
@@ -21,6 +22,6 @@ export default class CadastroClienteTitular extends Processo {
         let armazem = Armazem.InstanciaUnica
         armazem.Clientes.push(cliente)
 
-        console.log('Finalizando o cadastro do cliente...')
+        console.log('Cliente titular cadastrado com sucesso!')
     }
 }
